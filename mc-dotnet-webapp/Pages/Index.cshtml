@@ -1,0 +1,21 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<header>
+    <h1 class="text-center">The GUID is: @Model.GUID</h1>
+</header>
+
+@if (!string.IsNullOrEmpty(Model.ResponseData))
+{
+    <div class="text-center mt-4">
+        <h2>Response Data:</h2>
+        <pre>@Model.ResponseData</pre>
+    </div>
+}
+else
+{
+    <p class="text-center mt-4">No response data available.</p>
+}

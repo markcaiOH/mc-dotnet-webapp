@@ -1,0 +1,7 @@
+C:\Users\Mark\source\repos\mc-dotnet-webapp\mc-dotnet-webapp\obj\Release\net8.0\PubTmp\Out\mc-dotnet-webapp.exe
+C:\Users\Mark\source\repos\mc-dotnet-webapp\mc-dotnet-webapp\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
+C:\Users\Mark\source\repos\mc-dotnet-webapp\mc-dotnet-webapp\obj\Release\net8.0\PubTmp\Out\appsettings.json
+C:\Users\Mark\source\repos\mc-dotnet-webapp\mc-dotnet-webapp\obj\Release\net8.0\PubTmp\Out\mc-dotnet-webapp.dll
+C:\Users\Mark\source\repos\mc-dotnet-webapp\mc-dotnet-webapp\obj\Release\net8.0\PubTmp\Out\mc-dotnet-webapp.deps.json
+C:\Users\Mark\source\repos\mc-dotnet-webapp\mc-dotnet-webapp\obj\Release\net8.0\PubTmp\Out\mc-dotnet-webapp.runtimeconfig.json
+C:\Users\Mark\source\repos\mc-dotnet-webapp\mc-dotnet-webapp\obj\Release\net8.0\PubTmp\Out\mc-dotnet-webapp.pdb

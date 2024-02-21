@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\mc-dotnet-webapp.props" />
+</Project>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
+using System.Net.Http.Headers;
 
 namespace mc_dotnet_webapp.Pages
 {
@@ -21,26 +22,18 @@ namespace mc_dotnet_webapp.Pages
             _logger = logger;
             _httpClientFactory = httpClientFactory;
         }
-
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string guid)
         {
-            //GUID = guid;
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            var idtoken = await HttpContext.GetTokenAsync("id_token");
-                        Console.WriteLine(idtoken);
-
-            GUID = User.FindFirst(c => c.Type == "https://dev-stu62oqd.us.com/GUID")?.Value;
-
-            Console.WriteLine("test123");
-
-            Console.WriteLine(idtoken);
-
+            //GUID = User.FindFirst(c => c.Type == "https://dev-stu62oqd.us.com/GUID")?.Value;
+            GUID = guid;
             if (!String.IsNullOrWhiteSpace(GUID)) {
                 var client = _httpClientFactory.CreateClient();
-                //var response = await client.GetAsync($"https://archpoccacheapi.azurewebsites.net/patientAPI/?guid={GUID}");
 
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await HttpContext.GetTokenAsync("access_token"));
+
+                //var response = await client.GetAsync($"https://archpoccacheapi.azurewebsites.net/patientAPI/?guid={GUID}");
                 var response = await client.GetAsync($"https://localhost:7051/patientAPI/?guid={GUID}");
+
                 if (response.IsSuccessStatusCode)
                 {
                     ResponseData = await response.Content.ReadAsStringAsync();

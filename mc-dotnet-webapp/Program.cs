@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+//var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -27,14 +27,14 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 
 });
 
-builder.Services.AddCors(options =>
+/*builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
                           policy.WithOrigins("https://localhost:7238");
                       });
-});
+});*/
 
 builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
@@ -53,7 +53,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseCors(MyAllowSpecificOrigins);
+//app.UseCors(MyAllowSpecificOrigins);
 
 
 app.UseAuthentication();

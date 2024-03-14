@@ -26,6 +26,7 @@ namespace mc_dotnet_webapp.Pages
         {
             //GUID = User.FindFirst(c => c.Type == "https://dev-stu62oqd.us.com/GUID")?.Value;
             GUID = guid;
+
             if (!String.IsNullOrWhiteSpace(GUID)) {
                 var client = _httpClientFactory.CreateClient();
 

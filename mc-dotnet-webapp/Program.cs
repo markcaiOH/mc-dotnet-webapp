@@ -21,7 +21,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 {
 
     options.Audience = builder.Configuration["Auth0:Audience"];
-    options.Scope = "patient:read-write";
+    options.Scope = "patient:read";
     options.UseRefreshTokens = true;
 
 

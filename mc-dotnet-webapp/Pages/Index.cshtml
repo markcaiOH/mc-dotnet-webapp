@@ -19,3 +19,15 @@ else
 {
     <p class="text-center mt-4">No response data available.</p>
 }
+
+@if (!string.IsNullOrEmpty(Model.MorePatientDetails))
+{
+    <div class="text-center mt-4">
+        <h2>More Patient Details:</h2>
+        <pre>@Model.MorePatientDetails</pre>
+    </div>
+}
+else
+{
+    <p class="text-center mt-4">No additional patient details available.</p>
+}

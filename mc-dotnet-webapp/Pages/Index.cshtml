@@ -1,4 +1,5 @@
 ﻿@page
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -6,7 +7,6 @@
 
 <header>
     <h1 class="text-center">The GUID is: @Model.GUID</h1>
-
 </header>
 
 @if (!string.IsNullOrEmpty(Model.ResponseData))
@@ -19,4 +19,16 @@
 else
 {
     <p class="text-center mt-4">No response data available.</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.MorePatientDetails))
+{
+    <div class="text-center mt-4">
+        <h2>More Patient Details:</h2>
+        <pre>@Model.MorePatientDetails</pre>
+    </div>
+}
+else
+{
+    <p class="text-center mt-4">No additional patient details available.</p>
 }

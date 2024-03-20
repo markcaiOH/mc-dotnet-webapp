@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace mc_dotnet_webapp.Pages
 {
@@ -16,6 +17,7 @@ namespace mc_dotnet_webapp.Pages
         private readonly IHttpClientFactory _httpClientFactory;
         public string GUID { get; private set; }
         public string ResponseData { get; private set; }
+        public string MorePatientDetails { get; private set; }
 
         public IndexModel(ILogger<IndexModel> logger, IHttpClientFactory httpClientFactory)
         {
@@ -32,12 +34,16 @@ namespace mc_dotnet_webapp.Pages
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await HttpContext.GetTokenAsync("access_token"));
 
-                //var response = await client.GetAsync($"https://archpoccacheapi.azurewebsites.net/patientAPI/?guid={GUID}");
-                var response = await client.GetAsync($"https://localhost:7051/patientAPI/?guid={GUID}");
+                var response = await client.GetAsync($"https://archpoccacheapi.azurewebsites.net/patientAPI/?guid={GUID}");
+                //var response = await client.GetAsync($"https://localhost:7051/patientAPI/?guid={GUID}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     ResponseData = await response.Content.ReadAsStringAsync();
+                    var patientData = JsonSerializer.Deserialize<PatientData>(ResponseData);
+                    var patientId = patientData?.Id;
+
+                    MorePatientDetails = await FetchFromFhirAsync(patientId);
                 } else
                 {
                     ResponseData = "Error retrieving data.";
@@ -45,43 +51,34 @@ namespace mc_dotnet_webapp.Pages
             }
         }
 
-        public async Task OnPostAsync(string guid)
+
+        public async Task<string> FetchFromFhirAsync(string patientId)
         {
-            GUID = guid;
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            var idtoken = await HttpContext.GetTokenAsync("id_token");
-            Console.WriteLine(idtoken);
-
-
-            Console.WriteLine("test123");
-
-            Console.WriteLine(idtoken);
-
-            if (!String.IsNullOrWhiteSpace(GUID))
+            if (!String.IsNullOrWhiteSpace(patientId))
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync($"https://archpoccacheapi.azurewebsites.net/patientAPI/?guid={GUID}");
-
-                if (response.IsSuccessStatusCode)
+                var fhirResponse = await client.GetAsync($"https://hapi.fhir.org/baseR4/Patient/{patientId}");
+                if (fhirResponse.IsSuccessStatusCode)
                 {
-                    ResponseData = await response.Content.ReadAsStringAsync();
+                    return await fhirResponse.Content.ReadAsStringAsync();
                 }
                 else
                 {
-                    ResponseData = "Error retrieving data.";
+                    _logger.LogError($"Failed to retrieve more patient details from FHIR for Patient ID: {patientId}");
+                    return "Error retrieving more patient details from FHIR.";
                 }
             }
+            return "No Patient ID provided.";
         }
 
-
-
-        /*
-        public void OnGet(string guid)
+        private class PatientData
         {
-            GUID = guid;
+            public string Id { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Address { get; set; }
+            public string HealthCardNumber { get; set; }
         }
-        */
 
     }
 }
